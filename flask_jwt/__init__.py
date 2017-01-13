@@ -37,8 +37,9 @@ CONFIG_DEFAULTS = {
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
     'JWT_EXPIRATION_DELTA': timedelta(seconds=300),
     'JWT_NOT_BEFORE_DELTA': timedelta(seconds=0),
-    'JWT_VERIFY_CLAIMS': ['signature', 'exp', 'nbf', 'iat'],
-    'JWT_REQUIRED_CLAIMS': ['exp', 'iat', 'nbf']
+    'JWT_VERIFY_CLAIMS': {'signature': True, 'exp': True, 'nbf': True,
+                          'iat': True},
+    'JWT_REQUIRED_CLAIMS': {'exp': True, 'nbf': True, 'iat': True}
 }
 
 
@@ -79,13 +80,13 @@ def _default_jwt_decode_handler(token):
     required_claims = current_app.config['JWT_REQUIRED_CLAIMS']
 
     options = {
-        'verify_' + claim: True
-        for claim in verify_claims
+        'verify_' + claim: status
+        for claim, status in verify_claims.items()
     }
 
     options.update({
-        'require_' + claim: True
-        for claim in required_claims
+        'require_' + claim: status
+        for claim, status in required_claims.items()
     })
 
     return jwt.decode(token, secret, options=options, algorithms=[algorithm], leeway=leeway)

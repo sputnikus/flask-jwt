@@ -150,11 +150,13 @@ Configuration Options
                            token can begin to be used. This value is added to
                            the ``iat`` (issued at) claim. Defaults to
                            ``timedelta(seconds=0)``
-``JWT_VERIFY_CLAIMS``      A list of claims to verify when decoding tokens.
-                           Defaults to ``['signature', 'exp', 'nbf', 'iat']``.
-``JWT_REQUIRED_CLAIMS``    A list of claims that are required in a token to be
-                           considered valid. Defaults to
-                           ``['exp', 'iat', 'nbf']``
+``JWT_VERIFY_CLAIMS``      A dict of claims to verify/skip when decoding tokens.
+                           Defaults to
+                           ``{'signature': True, 'exp': True, 'nbf': True,
+                              'iat': True}``.
+``JWT_REQUIRED_CLAIMS``    A dict of claims that are mandatory/optional in
+                           a token to be considered valid. Defaults to
+                           ``{'exp': True, 'nbf': True, 'iat': True}``
 ========================== =====================================================
 
 API
